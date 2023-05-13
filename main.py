@@ -1,7 +1,6 @@
-import view.zooView as zooVista
-import models.Zoo as zooModel
+import view.zooView as zooView
 
-if __name__ == "__main__":
-    zoo = zooModel.Zoo()
-    zooVista.zooView.menu_principalV()
+if __name__ == '__main__':
+    view = zooView.zooView()
+    view.menu_principalV()
 
