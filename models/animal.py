@@ -2,8 +2,9 @@
 from typing import List, Dict
 
 class Animal:
-    def __init__(self, nombre, especie, estadoDeSalud, id, tempMaxA, tempMinA,  cantMaxDormir, edad, juguetes,
-                 alimentacion):
+    def _init_(self, nombre="", especie="", estadoDeSalud="", id=0, tempMaxA=0, tempMinA=0, cantMaxDormir=0, edad=0,
+               juguetes=[],
+               alimentacion=None):
         self.nombre = nombre
         self.especie = especie
         self.estadoDeSalud = estadoDeSalud
@@ -17,4 +18,4 @@ class Animal:
         self.jugar = False
         self.comer = False
         self.juguetes = juguetes
-        self.alimentos = {}
+

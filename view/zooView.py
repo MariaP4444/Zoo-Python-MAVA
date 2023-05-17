@@ -1,128 +1,168 @@
 import models.Zoo as zooModel
-import models.habitat as habitatModel
+import streamlit as st
 import controller.zooContrller as zooController
 
+
 class zooView:
-    def menu_principalV(self):
-        opcion = -1
-        zoo = zooModel.Zoo()
+    def __init__(self):
+        self.zoo = zooModel.Zoo()
+        self.controlador = zooController.zooController(self.zoo, self)
 
-        while opcion != 0:
-            print("\n~~~~~~~~~~~~~~~~~~~~~ ZOO:", zoo.nombre , "~~~~~~~~~~~~~~~~~~~~~\n")
-            print("1. Agregar habitat")
-            print("2. Agregar animal")
-            print("3. Lista de habitats y animales")
-            print("4. Modificar informacion de animal")
-            print("5. Visitar habitat")
-            print("0. Salir")
-            opcion = int(input("Escoge una opcion: "))
 
-            controlador = zooController.zooController(zoo, self)
-            controlador.menu_principal(opcion)
+    def prueba(self):
+        opcion = 0
+
+        st.title("Bienvenido el zoologico MAVA")
+
+        with st.container():
+            col1, col2, col3, col4, col5 = st.columns(5)
+            boton_agregar_habitat = col1.button("Agregar habitat", 1)
+            boton_agregar_animal = col2.button("Agregar animal", 2)
+            boton_listar_habitats = col3.button("Listar animales", 3)
+            boton_modificar_infoAn = col4.button("Editar animal", 4)
+            boton_visitar_habitat = col5.button("Interactuar con animal", 5)
+
+        if boton_agregar_habitat:
+            st.session_state["opcion"] = 1
+        elif boton_agregar_animal:
+            st.session_state["opcion"] = 2
+        elif boton_listar_habitats:
+            st.session_state["opcion"] = 3
+        elif boton_modificar_infoAn:
+            st.session_state["opcion"] = 4
+        elif boton_visitar_habitat:
+            st.session_state["opcion"] = 5
+
+        if "opcion" in st.session_state:
+            self.controlador.menu_principalV2(st.session_state["opcion"])
+
+
+
+    def crear_animal_prueba(self, zoo):
+        listaDatos = []
+        st.divider()
+        with st.container():
+            st.subheader("Formulario para crear un nuevo producto")
+            nombre = st.text_input("Nombre:")
+            listaDatos.append(nombre)
+
+            especie = st.text_input("Especie:")
+            listaDatos.append(especie)
+
+            salud = st.text_input("Estado de salud:")
+            listaDatos.append(salud)
+
+            listaDatos.append(zoo.cantAnimales)
+            self.zoo.cantAnimales+=1
+
+            edad = st.number_input("Edad:", min_value=0, max_value=100)
+            listaDatos.append(edad)
+
+            tempMax = st.number_input("Temperatura máxima")
+            listaDatos.append(tempMax)
+
+            tempMin = st.number_input("Temperatura mínima", max_value=tempMax)
+            listaDatos.append(tempMin)
+
+            hSuenio = st.number_input("Horas de sueño:", min_value=0, max_value=24)
+            listaDatos.append(hSuenio)
+
+            cantJuguetes = st.number_input("Cantidad de juguetes:", min_value=1, max_value=15)
+            lista_juguetes = []
+            if cantJuguetes:
+                col1, col2 = st.columns([3,1])
+                i=1
+                while i <= cantJuguetes:
+                    with st.container():
+                        nombre = col1.text_input(f"Nombre juguete {i}:", key=i+95)
+                        print(i)
+                        lista_juguetes.append(nombre)
+                    i+=1
+            listaDatos.append(lista_juguetes)
+
+            option = st.selectbox(
+                'Tipo de dieta',
+                ('Carnivora', 'Herbivora', 'Omnivora'))
+
+            st.write('Has seleccionado la dieta:', option)
+
+            listaDatos.append(option)
+
+            boton_accion = st.button("Crear nuevo producto")
+
+            if boton_accion:
+                return listaDatos
+
+
+    def preguntar_id(self):
+        id = st.number_input("Ingrese el id del animal: ", min_value=0)
+        return id
+
+    def menu_info_animal_prueba(self, animal):
+        print(print(animal.nombre))
+        option = st.selectbox(
+            'How would you like to be contacted?',
+            ('Edad', 'Estado de salud', 'Horas de sueño', 'Cantidad de kg en dieta', 'Agregar juguetes', 'Eliminar juguetes', 'Agregar alimento', 'Eliminar alimento'))
+
+        st.write('You selected:', option)
+
+
+
+    def menu_info_animal_V(self, animal):
+        terminado = False
+        while not terminado:
+            print("\n** Seleccione el dato a cambiar **")
+            print("1. Edad")
+            print("2. Estado de salud")
+            print("3. Horas de sueño máximas")
+            print("4. Cantidad de kg en dieta")
+            print("5. Agregar juguetes")
+            print("6. Eliminar juguete")
+            print("7. Agregar alimento a la dieta del animal")
+            print("8. Eliminar alimento de la dieta del animal")
+            print("0. Guardar y salir")
+
+            opcion = int(input())
+
+            self.controlador.menu_cambiar_infoAn(opcion, animal)
 
             if opcion == 0:
                 print("Adios!")
-            if opcion < 0 or opcion > 5:
+                terminado = True
+            if opcion < 0 or opcion > 8:
                 print("Opción inválida. Inténtalo de nuevo.")
 
+            print(animal.edad)
 
-    def crear_animal(self, zoo):
-        listaDatos = []
-        juguetes_temp = []
+    def obtener_Dato_String(self, mensaje):
+        return st.text_input(mensaje)
 
-        ##ingresa nombre [0]
-        listaDatos.append(input("Ingrese el nombre del animal:"))
+    def obtener_Dato_Int(self, mensaje):
+        return st.number_input(mensaje)
 
-        ##Ingresa especie [1]
-        listaDatos.append(input("Ingrese la especie del animal:"))
+    def obtener_Dato_Int_Rango(self, mensaje, min_value=0, max_value=0):
+        return st.number_input(mensaje, min_value=min_value, max_value=max_value)
 
-        ##Ingresa estado de salud [2]
-        listaDatos.append(input("Ingrese el estado de salud del animal:"))
+    def escoger_Dieta(self):
 
-        ##Ingresa id [3]
-        listaDatos.append(zoo.cantAnimales)
-        zoo.cantAnimales += 1
+        dietasDisponible = ["carnivora", "herbivora", "omnivora"]
 
-        while True:
-            try:
-                print("Ingrese la edad del animal:")
-                edad = int(input())
-                if edad <= 0 or edad > 100:
-                    raise ValueError("La edad debe ser un entero positivo menor o igual a 100")
-                break
-            except ValueError:
-                 print("Se ingresó un argumento inválido. Por favor ingrese un número entero.")
+        option = st.selectbox(
+            'Tipo de dieta',
+            dietasDisponible)
 
-        ##Ingresa edad [4]
-        listaDatos.append(input(edad))
+        st.write('Has seleccionado la dieta:', option)
 
-        tempMaxA = int(input("Ingrese la temperatura maxima: "))
-        ##Ingresa temperatura maxima [5]
-        listaDatos.append(input(tempMaxA))
+        return option
 
-        while True:
-            try:
-                print("Ingrese la temperatura minima del animal: ")
-                tempMinA = int(input())
-                if tempMinA > tempMaxA:
-                    raise ValueError("La temperatura maxima es menor que la temperatura minima")
-                break
-            except ValueError:
-                print("Se ingresó un argumento inválido. Por favor ingrese un numero menor a la temperatura maxima.")
 
-        ##Ingresa temperatura minima [6]
-        listaDatos.append(tempMinA)
 
-        while True:
-            try:
-                print("Ingrese las horas de sueño del animal:")
-                cant_max_dormir = int(input())
-                if cant_max_dormir <= 0:
-                    raise ValueError("La cantidad de horas de sueño debe ser un entero positivo")
-                break
-            except ValueError:
-                print("Se ingresó un argumento inválido. Por favor ingrese un número entero.")
+    def pedir_salud(self):
+        salud = input("Ingrese el estado actual de salud del animal: ")
+        return salud
 
-        ##Ingresa horas de suenio [7]
-        listaDatos.append(cant_max_dormir)
+    def mostrar_mensaje_exitoso(self, mensaje):
+        st.success(mensaje)
 
-        while True:
-            try:
-                print("Ingrese el número de juguetes que va a tener el animal:")
-                cant_juguetes = int(input())
-                if cant_juguetes <= 0:
-                    raise ValueError("La cantidad de juguetes debe ser un entero positivo")
-                break
-            except ValueError:
-                print("Se ingresó un argumento inválido. Por favor ingrese un número entero.")
-
-        for i in range(cant_juguetes):
-            print(f"Ingrese el nombre del juguete {i + 1}:")
-            juguete_nom = input().lower()
-            juguetes_temp.append(juguete_nom)
-
-        listaDatos.append(juguetes_temp)
-
-        while True:
-            print("\nTipo de dieta disponible:")
-            print("\n - Carnivoro \n - Herbivoro \n - Omnivoro")
-            print("Ingrese el tipo de alimentación del animal:")
-            alimentacion = input().lower()
-            if zoo.lista_dietas_disponibles(alimentacion):
-                break
-            else:
-                print("La dieta ingresada no está disponible. Por favor ingrese una dieta válida.")
-
-        listaDatos.append(alimentacion)
-
-        return listaDatos
-
-    def preguntar_id(self):
-        id = int(input("Ingrese el id del animal: "))
-        return
-
-    #def mostrar_mensaje_exitoso(self, mensaje):
-    #    st.success(mensaje)
-
-    #def mostrar_mensaje_error(self, mensaje):
-    #    st.error(mensaje)
+    def mostrar_mensaje_error(self, mensaje):
+        st.error(mensaje)

@@ -1,5 +1,5 @@
 class Alimentacion:
-    def __init__(self, tipoDieta,alimentosDisponibles = [], alimentosAnimal= {}):
+    def __init__(self, tipoDieta = '',alimentosDisponibles = [], alimentosAnimal= {}):
         self.tipoDieta = tipoDieta
         self.alimentosDisponibles = alimentosDisponibles
         self.alimentosAnimal = alimentosAnimal
@@ -17,23 +17,20 @@ class Alimentacion:
     def eliminarAlimentoAnimal(self, alimentoEliminar):
         self.alimentosAnimal.remove(alimentoEliminar)
 
-    def elegirAlim(self,cantidadAlimeto1,cantidadAlimeto2,cantidadAlimeto3):
-        if self.tipoDieta == "carnivoro":
-            self.alimentosAnimal["res"] = cantidadAlimeto1
-            self.alimentosAnimal["pollo"] = cantidadAlimeto2
-            self.alimentosAnimal["pescado"] = cantidadAlimeto3
+    def designadorDeAlimentosDispo(self):
+        print(f"dieta actual = {self.tipoDieta}")
+        if self.tipoDieta == "carnivora":
+            print("c")
             self.alimentosDisponibles = ["viseras", "gambas", "almejas", "huevos", "cerdo", "pollo", "res", "pescado"]
 
-        elif self.tipoDieta == "herbivoro":
-            self.alimentosAnimal["frutas"] = cantidadAlimeto1
-            self.alimentosAnimal["verduras"] = cantidadAlimeto2
-            self.alimentosAnimal["granos"] = cantidadAlimeto3
-            self.alimentosDisponibles = ["semillas", "granos", "verduras", "frutas", "polen", "nectar", "flores", "savia", "corteza", "hojas","raices"]
+        elif self.tipoDieta == "herbivora":
+            print("h")
+            self.alimentosDisponibles = ["semillas", "granos", "verduras", "frutas", "polen", "nectar", "flore",
+                                         "savia", "corteza", "hojas", "raices"]
 
-
-        elif self.tipoDieta == "omnivoro":
-            self.alimentosAnimal["res"] = cantidadAlimeto1
-            self.alimentosAnimal["pollo"] = cantidadAlimeto2
-            self.alimentosAnimal["frutas"] = cantidadAlimeto3
-            self.alimentosDisponibles = ["viseras", "gambas", "almejas", "huevos", "cerdo", "pollo", "res", "pescado","semillas", "granos", "verduras", "frutas", "polen", "nectar", "flores", "savia", "corteza", "hojas","raices"]
+        elif self.tipoDieta == "omnivora":
+            print("o")
+            self.alimentosDisponibles = ["viseras", "gambas", "almejas", "huevos", "cerdo", "pollo", "res", "pescado",
+                                         "semillas", "granos", "verduras", "frutas", "polen", "nectar", "flores",
+                                         "savia", "corteza", "hojas", "raices"]
 
