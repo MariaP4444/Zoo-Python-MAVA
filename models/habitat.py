@@ -1,6 +1,6 @@
 
 class Habitat:
-    def __init__(self, nombre, tempMax, tempMin,dieta, cantMaxAnimales):
+    def __init__(self, nombre, tempMax, tempMin , dieta, cantMaxAnimales):
         self.nombre = nombre
         self.tempMax = tempMax
         self.tempMin = tempMin
@@ -43,28 +43,28 @@ class Habitat:
 
 
 class HabitatAcuatico(Habitat):
-    def __init__(self, nombre, tempMax, tempMin, salinidad, profundidad):
-        super().__init__(nombre, tempMax, tempMin)
+    def __init__(self,  nombre, tempMax, tempMin, dieta, cantMaxAnimales, salinidad, profundidad):
+        super().__init__( nombre, tempMax, tempMin,dieta, cantMaxAnimales)
         self.salinidad = salinidad
         self.profundidad = profundidad
 
 
 class HabitatPolar(Habitat):
-    def __init__(self, nombre, tempMax, tempMin, cantidadHielo, tamanioCueva):
-        super().__init__(nombre, tempMax, tempMin)
+    def __init__(self, nombre, tempMax, tempMin,dieta, cantMaxAnimales, cantidadHielo, tamanioCueva):
+        super().__init__( nombre, tempMax, tempMin,dieta, cantMaxAnimales)
         self.cantidadHielo = cantidadHielo
         self.tamanioCueva = tamanioCueva
 
 
 class HabitatDesertico(Habitat):
-    def __init__(self, nombre, tempMax, tempMin, humedad, cantidadOasis):
-        super().__init__(nombre, tempMax, tempMin)
+    def __init__(self,  nombre, tempMax, tempMin,dieta, cantMaxAnimales, humedad, cantidadOasis):
+        super().__init__( nombre, tempMax, tempMin,dieta, cantMaxAnimales)
         self.humedad = humedad
         self.cantidadOasis = cantidadOasis
 
 
 class HabitatSelvatico(Habitat):
-    def __init__(self, nombre, tempMax, tempMin, cantidadArboles, cantidadRios):
-        super().__init__(nombre, tempMax, tempMin)
+    def __init__(self,  nombre, tempMax, tempMin,dieta, cantMaxAnimales, cantidadArboles, cantidadRios):
+        super().__init__( nombre, tempMax, tempMin,dieta, cantMaxAnimales)
         self.cantidadArboles = cantidadArboles
         self.cantidadRios = cantidadRios

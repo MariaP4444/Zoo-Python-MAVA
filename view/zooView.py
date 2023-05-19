@@ -37,61 +37,23 @@ class zooView:
             self.controlador.menu_principalV2(st.session_state["opcion"])
 
 
+    def seleccionar_Habitat(self):
+        opcion = st.radio(
+            "Escoge el tipo de habitat que vas a crear:",
+            ('Selvatico', 'Desertico', 'Acuatico','Polar'))
 
-    def crear_animal_prueba(self, zoo):
-        listaDatos = []
-        st.divider()
-        with st.container():
-            st.subheader("Formulario para crear un nuevo producto")
-            nombre = st.text_input("Nombre:")
-            listaDatos.append(nombre)
+        if opcion == 'Selvatico':
+            st.write('El habitat selvatico tiene una temperatura de (20 a 39 grados)')
+        elif opcion == 'Desertico':
+            st.write('El habitat desertico tiene una temperatura de (40 a 60 grados)')
+        elif opcion == 'Acuatico':
+            st.write('El habitat acuatico tiene una temperatura de (1 a 19 grados)')
+        else:
+            st.write('El habitat polar tiene una temperatura de (0 a -60 grados)')
 
-            especie = st.text_input("Especie:")
-            listaDatos.append(especie)
 
-            salud = st.text_input("Estado de salud:")
-            listaDatos.append(salud)
+        return opcion
 
-            listaDatos.append(zoo.cantAnimales)
-            self.zoo.cantAnimales+=1
-
-            edad = st.number_input("Edad:", min_value=0, max_value=100)
-            listaDatos.append(edad)
-
-            tempMax = st.number_input("Temperatura máxima")
-            listaDatos.append(tempMax)
-
-            tempMin = st.number_input("Temperatura mínima", max_value=tempMax)
-            listaDatos.append(tempMin)
-
-            hSuenio = st.number_input("Horas de sueño:", min_value=0, max_value=24)
-            listaDatos.append(hSuenio)
-
-            cantJuguetes = st.number_input("Cantidad de juguetes:", min_value=1, max_value=15)
-            lista_juguetes = []
-            if cantJuguetes:
-                col1, col2 = st.columns([3,1])
-                i=1
-                while i <= cantJuguetes:
-                    with st.container():
-                        nombre = col1.text_input(f"Nombre juguete {i}:", key=i+95)
-                        print(i)
-                        lista_juguetes.append(nombre)
-                    i+=1
-            listaDatos.append(lista_juguetes)
-
-            option = st.selectbox(
-                'Tipo de dieta',
-                ('Carnivora', 'Herbivora', 'Omnivora'))
-
-            st.write('Has seleccionado la dieta:', option)
-
-            listaDatos.append(option)
-
-            boton_accion = st.button("Crear nuevo producto")
-
-            if boton_accion:
-                return listaDatos
 
 
     def preguntar_id(self):
@@ -143,7 +105,7 @@ class zooView:
     def obtener_Dato_Int_Rango(self, mensaje, min_value=0, max_value=0):
         return st.number_input(mensaje, min_value=min_value, max_value=max_value)
 
-    def escoger_Dieta(self):
+    def escoger_Alimentacion(self):
 
         dietasDisponible = ["carnivora", "herbivora", "omnivora"]
 

@@ -46,3 +46,6 @@ class Zoo:
 
     def agregarAnimalRegistro(self, animalNuevo):
         self.registroAn[animalNuevo.id] = animalNuevo
+
+    def agregarHabitat(self, habitat):
+        self.habitats.append(habitat)
