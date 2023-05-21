@@ -15,12 +15,13 @@ class zooView:
         st.title("Bienvenido el zoologico MAVA")
 
         with st.container():
-            col1, col2, col3, col4, col5 = st.columns(5)
+            col1, col2, col3, col4, col5, col6 = st.columns(6)
             boton_agregar_habitat = col1.button("Agregar habitat", 1)
             boton_agregar_animal = col2.button("Agregar animal", 2)
             boton_listar_habitats = col3.button("Listar animales", 3)
             boton_modificar_infoAn = col4.button("Editar animal", 4)
             boton_visitar_habitat = col5.button("Interactuar con animal", 5)
+            boton_vincular_Animal_Habitat = col6.button("Vincular animal con un habitat",6)
 
         if boton_agregar_habitat:
             st.session_state["opcion"] = 1
@@ -32,6 +33,8 @@ class zooView:
             st.session_state["opcion"] = 4
         elif boton_visitar_habitat:
             st.session_state["opcion"] = 5
+        elif boton_vincular_Animal_Habitat:
+            st.session_state["opcion"] = 6
 
         if "opcion" in st.session_state:
             self.controlador.menu_principalV2(st.session_state["opcion"])
@@ -116,8 +119,6 @@ class zooView:
         st.write('Has seleccionado la dieta:', option)
 
         return option
-
-
 
     def pedir_salud(self):
         salud = input("Ingrese el estado actual de salud del animal: ")

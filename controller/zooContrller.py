@@ -15,7 +15,7 @@ class zooController:
         if opcion == 1:
             habitat = self.crear_Habitat()
             if habitat:
-                self.models.agregarAnimalRegistro(habitat)
+                self.models.agregarHabitat(habitat)
                 self.view.mostrar_mensaje_exitoso(f"Se ha agregado a {habitat.nombre} correctamente")
 
         if opcion == 2:
@@ -38,6 +38,35 @@ class zooController:
                     self.view.menu_info_animal_prueba(animal_temp)
         if opcion == 5:
             print(f"edad animal 0: {self.models.registroAn[0].edad}")
+
+        if opcion == 6:
+
+            self.vincular_Animal_Habitat()
+
+    def vincular_Animal_Habitat(self):
+        st.divider()
+        if len(self.view.zoo.registroAn) >= 1:
+            animalAgregar = self.models.listarAnimalesRegistro()
+            st.write('animal', animalAgregar.id)
+            if len(self.view.zoo.habitats) >= 1:
+                habitat = self.models.listarHabitatasDiponiblesAnimal(animalAgregar)
+                if habitat == None:
+                    st.write('NO hay habitat para el animal')
+                else:
+                    st.write('habitat', habitat.nombre, "DIETA ", habitat.dieta)
+                    boton_agregar = st.button("Agregar el animal al habitat")
+                    if boton_agregar:
+                        if habitat:
+                            habitat.agregarAnimal(animalAgregar)
+                            self.models.eliminarAnimalRegistro(animalAgregar.id)
+                            self.view.mostrar_mensaje_exitoso("El animal fue agregado al habitat correctamente")
+                        else:
+                            self.view.mensajeError("No has seleccionado a ningun habitat para agregar al animal")
+            else:
+                st.write('NO hay habitat para el animal')
+
+        else:
+            st.write("No hay animales por el moemento en el registro")
 
     def crear_Habitat(self):
         st.divider()
@@ -105,10 +134,9 @@ class zooController:
             nuevoAnimal.edad = self.view.obtener_Dato_Int_Rango("Ingrese la edad del animal La edad debe ser un entero "
                                                                 "positivo menor o igual a 100", 0, 100)
 
-            nuevoAnimal.tempMaxA = self.view.obtener_Dato_Int("Ingrese la temperatura maxima: ")
+            nuevoAnimal.tempMaxA = st.slider("Ingrese la temperatura maxima del animal: ", -59, 60)
 
-            nuevoAnimal.tempMinA = st.number_input("Ingrese la temperatura minima del animal: ",
-                                                   max_value=nuevoAnimal.tempMaxA)
+            nuevoAnimal.tempMinA = st.slider("Ingrese la temperatura maxima del animal: ", -60,nuevoAnimal.tempMaxA)
 
             cantJuguetes = self.view.obtener_Dato_Int_Rango("Ingrese el número de juguetes que va a tener el animal:",
                                                             1, 15)
