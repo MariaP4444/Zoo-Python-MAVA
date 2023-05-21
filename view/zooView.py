@@ -98,10 +98,13 @@ class zooView:
                     hSuenio = self.obtener_Dato_Int_Rango("Ingrese las horas que va a dormir", 1, animal.cantMaxDormir - animal.cantHorasDormidas)
 
                     if hSuenio:
-                        animal.cantHorasDormidas += hSuenio
+                        boton_accion = st.button("Mandar a dormir")
 
-                        self.mostrar_mensaje_exitoso(
-                            f"{animal.nombre} va a dormir durante  {hSuenio} horas")
+                        if boton_accion:
+                            self.mostrar_mensaje_exitoso(
+                                f"{animal.nombre} va a dormir durante  {hSuenio} horas")
+                            animal.cantHorasDormidas += hSuenio
+
 
             elif option == "jugar":
                 if animal.jugar:
@@ -112,9 +115,12 @@ class zooView:
                         animal.juguetes)
 
                     if juguete:
+                        boton_accion = st.button("Mandar a jugar")
 
-                        self.mostrar_mensaje_exitoso(
-                            f"{animal.nombre} está jugando con su {juguete}")
+                        if boton_accion:
+                            self.mostrar_mensaje_exitoso(
+                                f"{animal.nombre} está jugando con su {juguete}")
+                            animal.jugar = True
 
     def menu_info_animal_prueba(self, animal):
 
@@ -127,93 +133,107 @@ class zooView:
             'Elige los datos a editar',
             datos_cambiar)
 
-        print(animal.cantHorasDormidas)
+        if options:
 
-        if "Nombre" in options:
-            animal.nombre = self.obtener_Dato_String("Nombre:")
+            if "Nombre" in options:
+                animal.nombre = self.obtener_Dato_String("Nombre:")
 
-        if "Edad" in options:
-            animal.edad = self.obtener_Dato_Int_Rango("Edad:", animal.edad, 100)
+            if "Edad" in options:
+                animal.edad = self.obtener_Dato_Int_Rango("Edad:", animal.edad, 100)
 
-        if "Estado de salud" in options:
-            animal.estadoDeSalud= self.obtener_Dato_String("Salud:")
+            if "Estado de salud" in options:
+                animal.estadoDeSalud= self.obtener_Dato_String("Salud:")
 
-        if "Horas de sueño" in options:
-            animal.cantMaxDormir = self.obtener_Dato_Int_Rango("Horas de sueño:", 1, 24)
+            if "Horas de sueño" in options:
+                animal.cantMaxDormir = self.obtener_Dato_Int_Rango("Horas de sueño:", 1, 24)
 
-        if "Cantidad de kg en dieta" in options:
+            if "Cantidad de kg en dieta" in options:
 
-            self.listar_alimentos_animal(animal)
-            i = 0
-            for clave in animal.alimentacion.alimentosAnimal.keys():
-                animal.alimentacion.alimentosAnimal[clave] = st.slider(f"Kilogramos de {clave}:", 0, 50, 25, key=i + 195)
-                i+=1
+                self.listar_alimentos_animal(animal)
+                i = 0
+                for clave in animal.alimentacion.alimentosAnimal.keys():
+                    animal.alimentacion.alimentosAnimal[clave] = st.slider(f"Kilogramos de {clave}:", 0, 50, 25, key=i + 195)
+                    i+=1
 
-        if "Agregar juguetes" in options:
+            if "Agregar juguetes" in options:
 
-            num_juguetes = self.obtener_Dato_Int_Rango("Numero de juguetes a agregar", 1, 15)
-            if num_juguetes:
-                self.agregar_juguetes(animal, num_juguetes, 268)
+                num_juguetes = self.obtener_Dato_Int_Rango("Numero de juguetes a agregar", 1, 15)
+                if num_juguetes:
+                    self.agregar_juguetes(animal, num_juguetes, 268)
 
-        if "Eliminar juguetes" in options:
+            if "Eliminar juguetes" in options:
 
-            if len(animal.juguetes) == 1:
-                self.mostrar_mensaje_error(f"No puedes eliminar el único juguete de {animal.nombre}")
-            else:
-                juguetes_eliminar = st.multiselect(
-                    'Juguetes del animal',
-                    animal.juguetes)
-
-                if len(juguetes_eliminar) == len(animal.juguetes):
-                    info_correcta = False
-                    self.mostrar_mensaje_error("No puedes eliminar todos los juguetes")
+                if len(animal.juguetes) == 1:
+                    self.mostrar_mensaje_error(f"No puedes eliminar el único juguete de {animal.nombre}")
                 else:
-                    for i in range(len(juguetes_eliminar)):
-                        animal.juguetes.remove(juguetes_eliminar[i])
+                    juguetes_eliminar = st.multiselect(
+                        'Juguetes del animal',
+                        animal.juguetes)
 
-        if "Agregar alimento a dieta actual" in options:
-
-            if len(animal.alimentacion.alimentosDisponibles) == 0:
-                self.mostrar_mensaje_error(f"No hay más alimentos disponibles dentro de la dieta de {animal.nombre}")
-
-            else:
-
-                alimentos_agregar = st.multiselect(
-                    'Alimentos diponibles para el animal',
-                    animal.alimentacion.alimentosDisponibles)
-
-                if alimentos_agregar:
-                    self.agregar_alimentos(animal, alimentos_agregar, 238)
-
-
-        if "Eliminar alimento en dieta actual" in options:
-
-            if len(animal.alimentacion.alimentosAnimal) == 1:
-                self.mostrar_mensaje_error(f"No puedes eliminar el único alimento de {animal.nombre}")
-
-            else:
-                alimentos_eliminar = st.multiselect(
-                    'Alimentos de la dieta del animal',
-                    animal.alimentacion.alimentosAnimal)
-
-                if alimentos_eliminar:
-
-                    if len(alimentos_eliminar) == len(animal.alimentacion.alimentosAnimal):
+                    if len(juguetes_eliminar) == len(animal.juguetes):
                         info_correcta = False
-                        self.mostrar_mensaje_error("No puedes eliminar todos los alimentos")
+                        self.mostrar_mensaje_error("No puedes eliminar todos los juguetes")
                     else:
-                        for i in range(len(alimentos_eliminar)):
-                            del animal.alimentacion.alimentosAnimal[alimentos_eliminar[i]]
+                        for i in range(len(juguetes_eliminar)):
+                            animal.juguetes.remove(juguetes_eliminar[i])
 
 
-        if "Agregar alimento a dieta disponible" in options:
-            animal.alimentacion.alimentosDisponibles.append(self.obtener_Dato_String("Ingrese el nombre del alimento"))
+            if "Agregar alimento a dieta actual" in options:
 
-        if info_correcta:
-            boton_accion = st.button("Actualizar información")
+                if len(animal.alimentacion.alimentosDisponibles) == 0:
+                    self.mostrar_mensaje_error(f"No hay más alimentos disponibles dentro de la dieta de {animal.nombre}")
 
-            if boton_accion:
-                st.success("El producto fue actualizado correctamente")
+                else:
+
+                    alimentos_agregar = st.multiselect(
+                        'Alimentos diponibles para el animal',
+                        animal.alimentacion.alimentosDisponibles)
+
+                    if alimentos_agregar:
+                        kgs = []
+                        col1, col2 = st.columns([3, 1])
+                        i = 0
+                        while i < len(alimentos_agregar):
+                            with st.container():
+                                kg = st.slider(f"Kilogramos de {alimentos_agregar[i]}:", 0, 50, 25, key=i + 238)
+                                print(i)
+                                kgs.append(kg)
+                            i += 1
+
+                        for clave in range(len(alimentos_agregar)):
+                            animal.alimentacion.alimentosAnimal[alimentos_agregar[clave]] = kgs[clave]
+
+
+            if "Eliminar alimento en dieta actual" in options:
+
+                if len(animal.alimentacion.alimentosAnimal) == 1:
+                    self.mostrar_mensaje_error(f"No puedes eliminar el único alimento de {animal.nombre}")
+
+                else:
+                    alimentos_eliminar = st.multiselect(
+                        'Alimentos de la dieta del animal',
+                        animal.alimentacion.alimentosAnimal)
+
+                    if alimentos_eliminar:
+
+                        if len(alimentos_eliminar) == len(animal.alimentacion.alimentosAnimal):
+                            info_correcta = False
+                            self.mostrar_mensaje_error("No puedes eliminar todos los alimentos")
+                        else:
+                            for i in range(len(alimentos_eliminar)):
+                                del animal.alimentacion.alimentosAnimal[alimentos_eliminar[i]]
+
+
+            if "Agregar alimento a dieta disponible" in options:
+                animal.alimentacion.alimentosDisponibles.append(self.obtener_Dato_String("Ingrese el nombre del alimento"))
+
+            if info_correcta:
+                boton_accion = st.button("Actualizar información")
+
+                if boton_accion:
+                    if "Agregar alimento a dieta actual" in options:
+                        animal.alimentacion.eliminar_alimentos_disponibles()
+                    st.success("El producto fue actualizado correctamente")
 
 
 
@@ -284,8 +304,7 @@ class zooView:
         for clave in range(len(lista_alimentos)):
             animal.alimentacion.alimentosAnimal[lista_alimentos[clave]] = kgs[clave]
 
-        for i in range(len(lista_alimentos)):
-            animal.alimentacion.alimentosDisponibles.remove(lista_alimentos[i])
+
 
     def agregar_juguetes(self, animal, cantJuguetes, num):
 

@@ -21,6 +21,7 @@ class zooController:
         if opcion == 2:
             animal = self.crear_animal(self.models.cantAnimales)
             if animal:
+                self.models.agregarAnimalRegistro(animal)
                 self.models.cantAnimales += 1
                 st.session_state["cantAnimales"] = self.models.cantAnimales
                 self.view.mostrar_mensaje_exitoso(f"Se ha agregado a {animal.nombre} correctamente")
@@ -60,14 +61,19 @@ class zooController:
                                 animal = self.models.habitats[id_habitat].animales[id_animal]
                                 if opc == 4:
                                     self.view.menu_info_animal_prueba(animal)
+                                    #Retorna 1 porque las opciones 4 y 5 usan esta función
+                                    return 1
                                 elif opc == 5:
                                     self.view.escoger_actividad(animal)
+                                    return 1
                     else:
                         animal = self.models.registroAn[id_animal]
                         if opc == 4:
                             self.view.menu_info_animal_prueba(animal)
+                            return 1
                         elif opc == 5:
                             self.view.escoger_actividad(animal)
+                            return 1
 
 
     def vincular_Animal_Habitat(self):
@@ -184,33 +190,28 @@ class zooController:
             st.caption(
                 f"Segun el tipo de dieta:blue[{nuevoAnimal.alimentacion.tipoDieta}], este puede comer hasta:blue[{x}] distintos tipos de alimentos")
 
-            options = st.multiselect(
+            seleccion_alimentos = st.multiselect(
                 'Alimentos diponibles para el animal',
                 nuevoAnimal.alimentacion.alimentosDisponibles)
 
-            for i in range(len(options)):
-                nuevoAnimal.alimentacion.alimentosDisponibles.remove(options[i])
-            print(nuevoAnimal.alimentacion.alimentosDisponibles)
 
             kgs = []
-            if options:
+            if seleccion_alimentos:
                 col1, col2 = st.columns([3, 1])
                 i = 0
-                while i < len(options):
+                while i < len(seleccion_alimentos):
                     with st.container():
                         print(i)
-                        kg = st.slider(f"Kilogramos de {options[i]}:", 0, 100, 25, key=i + 155, )
+                        kg = st.slider(f"Kilogramos de {seleccion_alimentos[i]}:", 0, 100, 25, key=i + 155, )
                         print(i)
                         kgs.append(kg)
                     i += 1
 
             alimentos = {}
-            for clave in range(len(options)):
-                alimentos[kgs[clave]] = options[clave]
+            for clave in range(len(seleccion_alimentos)):
+                alimentos[seleccion_alimentos[clave]] = kgs[clave]
 
             nuevoAnimal.alimentacion.alimentosAnimal = alimentos
-
-            self.models.agregarAnimalRegistro(nuevoAnimal)
 
             if nuevoAnimal.nombre and nuevoAnimal.tempMaxA and nuevoAnimal.alimentacion and nuevoAnimal.juguetes:
                 boton_accion = st.button("Crear nuevo animal")

@@ -34,3 +34,9 @@ class Alimentacion:
                                          "semillas", "granos", "verduras", "frutas", "polen", "nectar", "flores",
                                          "savia", "corteza", "hojas", "raices"]
 
+
+    def eliminar_alimentos_disponibles(self):
+        for clave in self.alimentosAnimal:
+            if clave in self.alimentosDisponibles:
+                self.alimentosDisponibles.remove(clave)
+        print(self.alimentosDisponibles)
