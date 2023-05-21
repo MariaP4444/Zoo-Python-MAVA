@@ -27,21 +27,48 @@ class zooController:
                 st.balloons()
 
         if opcion == 4:
-            id_animal = self.view.preguntar_id()
-            id_habitat = self.view.obtener_Dato_Int_Rango("ID del habitat del animal:", 0)
-            if id_animal and id_habitat:
-                animal_temp = self.models.buscar_animal_id(id_animal, id_habitat)
-                if animal_temp is None:
-                    print("no existe id")
-                    self.view.mostrar_mensaje_error(f"El id '{id_animal}' no corresponde a ningun animal")
-                else:
-                    self.view.menu_info_animal_prueba(animal_temp)
+            self.buscar_id(4)
+
         if opcion == 5:
-            print(f"edad animal 0: {self.models.registroAn[0].edad}")
+            self.buscar_id(5)
 
         if opcion == 6:
 
             self.vincular_Animal_Habitat()
+
+    def buscar_id(self, opc):
+
+        if self.models.cantAnimales == 0:
+            self.view.mostrar_mensaje_error("No hay animales")
+
+        else:
+            id_animal = self.view.preguntar_id()
+
+            if id_animal:
+
+                if id_animal > self.models.cantAnimales:
+                    self.view.mostrar_mensaje_error("No existe ID del habitat")
+                else:
+                    if id_animal not in self.models.registroAn:
+                        id_habitat = self.view.obtener_Dato_Int_Rango("ID del habitat del animal:", 0)
+
+                        if id_habitat:
+
+                            if id_habitat not in self.models.habitats:
+                                self.view.mostrar_mensaje_error("No existe ID del habitat")
+                            else:
+                                animal = self.models.habitats[id_habitat].animales[id_animal]
+                                if opc == 4:
+                                    self.view.menu_info_animal_prueba(animal)
+                                elif opc == 5:
+                                    self.view.escoger_actividad(animal)
+                    else:
+                        animal = self.models.registroAn[id_animal]
+                        if opc == 4:
+                            self.view.menu_info_animal_prueba(animal)
+                        elif opc == 5:
+                            self.view.escoger_actividad(animal)
+
 
     def vincular_Animal_Habitat(self):
         st.divider()
@@ -107,24 +134,18 @@ class zooController:
             else:
                 st.error("Faltan datos")
 
-    def menu_cambiar_infoAn(self, opcion, animal):
-        if opcion == 1:
-            edad = self.view.edad_animal()
-            animal.edad = edad
-            # self.view.mostrar_mensaje_exitoso(f"Se ha actualizado la edad a {edad} anios")
-        if opcion == 2:
-            salud = self.view.pedir_salud()
-            animal.estadoDeSalud = salud
-            # self.view.mostrar_mensaje_exitoso(f"Se ha actualizado la edad a {edad} anios")
 
-        # edad = self.models.animal.edad
-        # salud = self.models.animal.estadoDeSalud
 
     def crear_animal(self, id):
         st.divider()
         with st.container():
             st.subheader("Formulario para crear un nuevo producto")
             nuevoAnimal = animalModel.Animal()
+
+            nuevoAnimal.comer = False
+            nuevoAnimal.cantHorasDormidas = 0
+            nuevoAnimal.jugar = False
+
             nuevoAnimal.nombre = self.view.obtener_Dato_String("Ingrese el nombre del animal:")
             nuevoAnimal.especie = self.view.obtener_Dato_String("Ingrese la especie del animal:")
             nuevoAnimal.estadoDeSalud = self.view.obtener_Dato_String("Ingrese el estado de salud del animal:")
@@ -137,6 +158,9 @@ class zooController:
             nuevoAnimal.tempMaxA = st.slider("Ingrese la temperatura maxima del animal: ", -59, 60)
 
             nuevoAnimal.tempMinA = st.slider("Ingrese la temperatura maxima del animal: ", -60,nuevoAnimal.tempMaxA)
+
+            nuevoAnimal.cantMaxDormir = self.view.obtener_Dato_Int_Rango("Ingrese el numero de horas diarias de sueño",
+                                                                         1, 24)
 
             cantJuguetes = self.view.obtener_Dato_Int_Rango("Ingrese el número de juguetes que va a tener el animal:",
                                                             1, 15)
@@ -164,7 +188,9 @@ class zooController:
                 'Alimentos diponibles para el animal',
                 nuevoAnimal.alimentacion.alimentosDisponibles)
 
-
+            for i in range(len(options)):
+                nuevoAnimal.alimentacion.alimentosDisponibles.remove(options[i])
+            print(nuevoAnimal.alimentacion.alimentosDisponibles)
 
             kgs = []
             if options:
@@ -192,3 +218,16 @@ class zooController:
                     return nuevoAnimal
             else:
                 st.error("Faltan datos")
+
+
+    def aplicar_formato_tabla(self, animal):
+        datos = []
+        datos.append([animal.id, animal.nombre, animal.especie, animal.estadoDeSalud, animal.cantMaxDormir, len(animal.juguetes)])
+        return datos
+
+    def aplicar_formato_alimentos(self, dic_alimentos):
+        datos = []
+        for clave in dic_alimentos.keys():
+            print(f"clave:{clave}")
+            datos.append([dic_alimentos[clave], clave])
+        return datos
