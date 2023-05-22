@@ -7,7 +7,7 @@
 3. [Models](##Models)
 4. [View](##View)
 5. [Controller](##Controller)
-6. [Diagrama de clases](##Diagrama de clases)
+6. [Diagramadeclases ](##Diagramadeclases)
 
 
 ## Introducción
@@ -139,6 +139,6 @@ El controlador tiene un método principal llamado menu_principalV2 que recibe un
 - def crear_animal se encarga de recopilar los datos necesarios para crear un nuevo animal. Primero, muestra un formulario en la interfaz gráfica donde el usuario puede ingresar información como el nombre, especie, estado de salud, edad, temperatura máxima, horas de sueño y juguetes del animal. Luego, permite seleccionar los alimentos disponibles para el animal y establecer la cantidad en kilogramos de cada alimento seleccionado. Finalmente, verifica que se hayan proporcionado todos los datos necesarios y muestra un botón para crear el nuevo animal. Si se hace clic en el botón, la función devuelve el objeto nuevoAnimal que contiene todos los datos ingresados.
 - Las funciones aplicar_formato_tabla y aplicar_formato_alimentos se utilizan para formatear los datos del animal y los alimentos en forma de tablas para su visualización en la interfaz gráfica.
 
-## Diagrama de clases
+## Diagramadeclases
 
 ![Diagrama de clases](https://github.com/MariaP4444/Zoo-Python-MAVA/blob/1c93a73bb263bcc0c68abb6965f382afe3b73f2e/crud.drawio.png)
