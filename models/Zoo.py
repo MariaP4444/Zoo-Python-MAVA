@@ -26,16 +26,38 @@ class Zoo:
                 self.habitats = []
                 st.session_state["habitats"] = []
 
+
+    """ ELIMINAR ANIMAL REGISTRO
+     Opcion: Vincular animal
+     Dado un ID se elimina un animal del registro que guarda animales sin habitat
+    """
     def eliminarAnimalRegistro(self, id):
         self.registroAn.pop(id)
 
 
+    """ AGREGAR ANIMAL REGISTRO
+     Agrega al diccionario registroAn de Zoo un animal nuevo como valor con su ID como clave
+    """
     def agregarAnimalRegistro(self, animalNuevo):
         self.registroAn[animalNuevo.id] = animalNuevo
 
+
+    """ AGREGAR HABITAT
+     Opcion: Crear habitat
+     Agrega a la lista habitats de Zoo un objeto habitat
+    """
     def agregarHabitat(self, habitat):
         self.habitats.append(habitat)
 
+
+    """ LISTAR ANIMALES REGISTRO
+     Opcion: Vincular animal con habitat
+     Muestra como opciones los diferentes animales que no tienen habitat, mostrando la siguiente informacion
+     - ID
+     - nombre
+     - dieta
+     Devuelve el animal escogido a la funcion vincular_Animal_Habitat para luego hacer un posible vinculo
+    """
     def listarAnimalesRegistro(self):
         listaInfoBasicaAnimal = []
         listaId = []
@@ -46,13 +68,21 @@ class Zoo:
             listaInfoBasicaAnimal.append(texto)
 
         opcion = st.radio(
-            "Escoge el animal que deseas vincular con un animal",
+            "Escoge el animal que deseas vincular con un habitat",
             listaInfoBasicaAnimal)
 
         if opcion:
             animalAgregar = self.registroAn[listaId[listaInfoBasicaAnimal.index((opcion))]]
             return animalAgregar
 
+    """ LISTAR HABITATS DISPONIBLES
+     Opcion: Vincular animal con habitat
+     Segun el aninal dado, saca un listado de habitats de la lista de habitats de ZOO que cumplen con las siguientes condiciones:
+     - Que no haya sobrepasado la cantidad maxima de alimentos
+     - Que el rango de temperaturas del animal este dentro o sea igual al rango de temperaturas del habitat
+     - Que el tipo de alimentacion del habitat y el animal coincidan
+     De haber algun habitat que las cumpla, el usuario escoge una y esta es retornada para hacer el vinculo. En el caso contrario, retorna None.
+    """
     def listarHabitatasDiponiblesAnimal(self, animal):
         habitatsDisponibles = []
         listaIndices = []
@@ -66,7 +96,7 @@ class Zoo:
             indice += 1
 
         opcion = st.radio(
-            "Escoge el animal que deseas vincular con un animal",
+            "Escoge el habitat que deseas vincular con un animal",
             habitatsDisponibles)
 
         if opcion:
@@ -76,6 +106,11 @@ class Zoo:
         else:
             return None
 
+
+    """ BUSCAR ANIMAL ID Y AGREGAR
+     Opcion: Crear habitat
+     Busca en los animales de todos los habitats y en el registro con el ID del animal para asignarle el animal que ha sido modificado
+    """
     def buscarAnimalIdYAgregar(self, id,animalModificado):
 
         for habitat in self.habitats:
@@ -87,6 +122,11 @@ class Zoo:
             if ID_R == id:
                 self.agregarAnimalRegistro(animalModificado)
 
+
+    """ LISTAR ANIMALES EN HABITAT
+     Lista los animales de todos los habitats y los animales que no tienen habitat. Los da como opciones para que el usuario escoja uno
+     y devuelve el animal escogido. Se usa para las opciones 4 y 5 para escoger uno para luego editarlo o interactuar con el
+    """
     def listarAnimalesEnHabitat(self):
         opciones = []
         for habitat in self.habitats:
@@ -118,6 +158,11 @@ class Zoo:
         else:
             return None
 
+    """ LISTAR INFO COMPLETA ZOO
+     Opcion: Listar animales
+     Enseña a traves de un desplegable los animales que estan en el registro (no tienen habitat) con su respectiva informacio.
+     De igual manera enseña la información de cada uno de los habitats y la informacion de sus respectivos animales
+    """
     def listarInfoCompletaZoo(self):
         st.divider()
 

@@ -11,18 +11,10 @@ class Habitat:
         self.cantMaxAnimales = cantMaxAnimales
 
 
-    def devolverPunteroAn(self, id):
-        return self.animales[id]
-
-    def listarAnimales(self):
-        animalesH = []
-        for ID, animal in self.animales.items():
-            texto = "++ Id:" + str(ID) + " ++ " + "Nombre: " + self.animales[ID].nombre +" ++ " + "dieta: " + self.animales[ID].alimentacion.tipoDieta
-            animalesH.append(texto)
-
-        if animalesH:
-            return animalesH
-
+    """ LISTAR ANIMALES
+     Opcion: Vincular animal
+     Dado un objeto animal, lo agrega al diccionario de animales del habitat, la clave es el ID y el valor el objeto animal
+    """
     def agregarAnimal(self, animalNuevo):
         self.animales[animalNuevo.id] = animalNuevo
 
@@ -33,8 +25,7 @@ class HabitatAcuatico(Habitat):
         self.salinidad = salinidad
         self.profundidad = profundidad
 
-    def listarAnimales(self):
-        super().listarAnimales()
+
 
 
 class HabitatPolar(Habitat):
@@ -43,8 +34,7 @@ class HabitatPolar(Habitat):
         self.cantidadHielo = cantidadHielo
         self.tamanioCueva = tamanioCueva
 
-    def listarAnimales(self):
-        super().listarAnimales()
+
 
 
 class HabitatDesertico(Habitat):
@@ -53,8 +43,7 @@ class HabitatDesertico(Habitat):
         self.humedad = humedad
         self.cantidadOasis = cantidadOasis
     
-    def listarAnimales(self):
-        super().listarAnimales()
+
 
 
 class HabitatSelvatico(Habitat):
@@ -63,5 +52,3 @@ class HabitatSelvatico(Habitat):
         self.cantidadArboles = cantidadArboles
         self.cantidadRios = cantidadRios
 
-    def listarAnimales(self):
-        super().listarAnimales()

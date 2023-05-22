@@ -8,6 +8,18 @@ class zooView:
     def __init__(self):
         self.zoo = zooModel.Zoo()
         self.controlador = zooController.zooController(self.zoo, self)
+
+
+    """ PRUEBA
+     Presenta el menu principal mediante botones, los cuales son:
+     - Agregar hábitat
+     - Agregar animal
+     - Listar animales
+     - Editar animal
+     - Interactuar con animal
+     - Vincular animal con un habitat
+     Segun el boton escogido, envia una opcion al controlador
+    """
     def prueba(self):
         opcion = 0
 
@@ -39,6 +51,12 @@ class zooView:
         if "opcion" in st.session_state:
             self.controlador.menu_principalV2(st.session_state["opcion"])
 
+
+    """ SELECCIONAR HABITAT
+        Opcion: Agregar habitat
+        Prsesenta los tipos de habitat mediante opciones (Selvatico, desertico acuatico, polar)
+        Retorna la opcion escogida a la funcion de crear habitat
+    """
     def seleccionar_Habitat(self):
         opcion = st.radio(
             "Escoge el tipo de habitat que vas a crear:",
@@ -57,15 +75,35 @@ class zooView:
         return opcion
 
 
+    """ ESCOGER ACTIVIDAD
+     Opcion: Interactuar con animal
+     Muestra como opciones las 3 actividades que se pueden hacer con un animal.
+     Una vez escogida, se retorna a la funcion interactuar_animal para realizar la accion deseada
+    """
     def escoger_actividad(self):
-
-        animal = self.zoo.listarAnimalesEnHabitat()
 
         actividades = ['comer', 'dormir', 'jugar']
 
         option = st.selectbox(
             'Tipo de dieta',
             actividades)
+        return option
+
+
+    """ ESCOGER ACTIVIDAD
+     Opcion: Interactuar con animal
+     Presenta las 3 opciones para interactuar con el animal: (comer, dormir, jugar)
+     Segun la opcion, revisa si el animal ya ha dormido la cantidad maxima de horas, si ya ha comido, y si ya ha jugado.
+     Si no lo ha hecho, le permite al usuario
+     Comer: escoger un alimento de la dieta actual
+     Dormir: decidir la cantidad de horas(min= 1, max= cantHorasDormidas)
+     Jugar: escoger un juguete del animal
+    """
+    def interactuar_animal(self):
+
+        animal = self.zoo.listarAnimalesEnHabitat()
+
+        option = self.escoger_actividad()
 
         if option:
 
@@ -116,6 +154,13 @@ class zooView:
                                 f"{animal.nombre} está jugando con su {juguete}")
                             animal.jugar = True
 
+
+    """ MENU INFO ANIMAL
+     Opcion: editar animal
+     Muestra algunos atributos del animal
+     Presenta las opciones para editar animal, que son los atributos que se pueden cambiar de cada animal
+     Retorna la opcion escogida a la funcion editar animal   
+    """
     def menu_info_animal(self, animal):
 
         self.listar_atributos_animal(animal)
@@ -128,15 +173,34 @@ class zooView:
 
         return options
 
+
+    """ OBTENER DATO STRING
+     Pide un dato al usuario en forma de string, con un mensaje que le indica lo que debe ingresar.
+     Retorna la cadena a varias funciones que requieren un input del tipo string
+    """
     def obtener_Dato_String(self, mensaje):
         return st.text_input(mensaje)
 
+
+    """ OBTENER DATO INT
+     Pide un dato al usuario en forma de entero, con un mensaje que le indica lo que debe ingresar.
+     Retorna la cadena a varias funciones que requieren un input del tipo entero
+    """
     def obtener_Dato_Int(self, mensaje):
         return st.number_input(mensaje)
 
+
+    """ OBTENER DATO INT RANGO
+     Pide un dato al usuario en forma de entero, con un mensaje que le indica lo que debe ingresar, y el rango en el que debe estar el numero
+     Retorna la cadena a varias funciones que requieren un input del tipo entero dentro de un rango
+    """
     def obtener_Dato_Int_Rango(self, mensaje, min_value=0, max_value=0):
         return st.number_input(mensaje, min_value=min_value, max_value=max_value)
 
+
+    """ ESCOGER ALIMENTACION
+     Presenta los 3 tipos de alimentacion, devuelve la opcion escogida a la funcion crear animal y crear habitat
+    """
     def escoger_Alimentacion(self):
 
         dietasDisponible = ["carnivora", "herbivora", "omnivora"]
@@ -150,12 +214,24 @@ class zooView:
         return option
 
 
+    """ MENSAJE EXITOSO
+     Muestra un mensaje que confirma que una accion se ha llevado a cabo correctamente
+    """
     def mostrar_mensaje_exitoso(self, mensaje):
         st.success(mensaje)
 
+
+    """ MENSAJE ERROR
+     Muestra un mensaje que indica que no se ha podido llevar a cabo una accion correctamente
+    """
     def mostrar_mensaje_error(self, mensaje):
         st.error(mensaje)
 
+
+    """ LISTAR ATRIBUTOS ANIMAL
+     Opcion: editar animal
+     Presenta una tabla que muestra atributos basicos del animal
+    """
     def listar_atributos_animal(self, animal):
         st.divider()
         with st.container():
@@ -166,6 +242,11 @@ class zooView:
             )
             st.table(datos)
 
+
+    """ LISTAR ALIMENTOS ANIMAL
+     Opcion: Editar animal
+     Presenta una tabla que muestra cada alimento del animal y la cantidad de kg correspondiente
+    """
     def listar_alimentos_animal(self, animal):
         st.divider()
         with st.container():
@@ -177,6 +258,11 @@ class zooView:
             )
             st.table(datos)
 
+
+    """ AREGAR JUGUETES
+     Opcion: Editar animal
+     Dada una lista de juguetes nuevos, los agrega a la lista de juguetes de un animal
+    """
     def agregar_juguetes(self, animal, cantJuguetes, num):
 
             col1, col2 = st.columns([3, 1])

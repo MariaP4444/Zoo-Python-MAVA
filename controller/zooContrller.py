@@ -10,6 +10,11 @@ class zooController:
         self.models = models
         self.view = view
 
+
+    """ MENU PRINCIPAL
+     Seun la opcion recibida, llama a otras funciones de las diferentes clases de los modelos y vistas y las maneja
+     para llevar a cabo la accion pedida, 
+    """
     def menu_principalV2(self, opcion):
 
         if opcion == 1:
@@ -34,12 +39,18 @@ class zooController:
             self.editarAniml()
 
         if opcion == 5:
-            self.view.escoger_actividad()
+            self.view.interactuar_animal()
 
         if opcion == 6:
 
             self.vincular_Animal_Habitat()
 
+
+    """ EDITAR ANIMAL
+     Opcion: Editar animal
+     Segun los atributos escogidos para cambiar utiliza funciones de la vista para pedir los datos.
+     Se asegura de que los datos ingresados sean correctos y congruentes con el contexto del animal
+    """
     def editarAniml(self):
         info_correcta = True
         animalModificar = self.models.listarAnimalesEnHabitat()
@@ -68,12 +79,11 @@ class zooController:
                                                                            key=i + 195)
                     i += 1
 
-            numero = [0]
+
             if "Agregar juguetes" in options:
                 num_juguetes = self.view.obtener_Dato_Int_Rango("Numero de juguetes a agregar", 1, 15)
                 if num_juguetes:
                     self.view.agregar_juguetes(animalModificar, num_juguetes, 268)
-                    print(f"numero:{numero[0]}")
 
             if "Eliminar juguetes" in options:
 
@@ -121,6 +131,13 @@ class zooController:
                     self.models.buscarAnimalIdYAgregar(animalModificar.id, animalModificar)
                     st.success("La información fue actualizada correctamente")
 
+
+    """ VINCULAR ANIMAL HABITAT
+     Muestra los animales que no estan un habitat (registroAn) y dada la opcion escogida, presenta los habitats que cumplen con las 
+     caracteristica necesarias para que albergar el animal (temperaturas, capacidad de animales, tipo de dieta).
+     Dada la seleccion de habitat y animal, se vinculan ambos siendo el habitat el contenedor de animales. Al agregar el animal se
+     elimina del registro que gurada los animales sin habiat
+    """
     def vincular_Animal_Habitat(self):
         st.divider()
         if len(self.view.zoo.registroAn) >= 1:
@@ -146,6 +163,12 @@ class zooController:
         else:
             st.write("No hay animales por el moemento en el registro")
 
+
+    """ CERAR HABITAT
+     Presenta los tipos de habiat para seleccionar, los tipos de alimentacion que puede tener el habitat (solo uno)
+     y pide la capacidad maxima de animales del habitat. Segun el tipo de habitat escogido (selvatico, desertico, acuatico y polar)
+     le asigna un rango de temperaturas pre-determinadas y le pide al usuario ingresar atributos especificos de cada tipo de habitat
+    """
     def crear_Habitat(self):
         st.divider()
         with st.container():
@@ -185,6 +208,16 @@ class zooController:
             else:
                 st.error("Faltan datos")
 
+
+    """ CREAR ANIMAL
+     Crea un objeto animal pidiendole diferentes datos al usuario, y teniendo en cuenta ciertos limites para mas congruencia, pide todos los atributos
+     de la clase animal a excepcion de:
+     - id: se asigna automaticamente
+     - jugar: inicialmente falso
+     - comer: inicialmente falso
+     - cantHorasDormidas: se asume que el animal no ha dormido
+     Todos los campos son obligatorios para crear el animal, se tiene que agregar al menos un juguete y un alimento
+    """
     def crear_animal(self, id):
         st.divider()
         with st.container():
@@ -263,14 +296,25 @@ class zooController:
             else:
                 st.error("Faltan datos")
 
+
+    """ APLICAR FORMATO TABLA
+     Opcion: Editar animal
+     Es usada para listar los atributos basicos del animal. Dados unos datos, los agrega a una lista que sera retornada para 
+     llenar una tabla
+    """
     def aplicar_formato_tabla(self, animal):
         datos = []
         datos.append([animal.id, animal.nombre, animal.especie, animal.estadoDeSalud, animal.cantMaxDormir, len(animal.juguetes)])
         return datos
 
+
+    """ APLICAR FORMATO TABLA
+     Opcion: Editar animal
+     Es usada para listar los alimentos de la diecta actual de un animal, junto con sus cantidades en kg. 
+     Dados unos datos, los agrega a una lista que sera retornada para llenar una tabla
+    """
     def aplicar_formato_alimentos(self, dic_alimentos):
         datos = []
         for clave in dic_alimentos.keys():
-            print(f"clave:{clave}")
             datos.append([dic_alimentos[clave], clave])
         return datos

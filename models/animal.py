@@ -20,6 +20,10 @@ class Animal:
         self.jugar = jugar
         self.comer = comer
 
+    """ IMPRIMIR JUGUETES
+     Opcion: Listar animales
+     Muestra cada juguete de la lsita de juguetes de un animal
+    """
     def imprimirJuguetes(self):
         for juguete in self.juguetes:
             st.write("     -- Nombre: ", juguete)
