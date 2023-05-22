@@ -27,6 +27,9 @@ class zooController:
                 self.view.mostrar_mensaje_exitoso(f"Se ha agregado a {animal.nombre} correctamente")
                 st.balloons()
 
+        if opcion == 3:
+            self.models.listarInfoCompletaZoo()
+
         if opcion == 4:
             self.editarAniml()
 
@@ -36,7 +39,6 @@ class zooController:
         if opcion == 6:
 
             self.vincular_Animal_Habitat()
-
 
     def editarAniml(self):
         info_correcta = True
@@ -118,10 +120,6 @@ class zooController:
                 if boton_accion:
                     self.models.buscarAnimalIdYAgregar(animalModificar.id, animalModificar)
                     st.success("La información fue actualizada correctamente")
-
-
-
-
 
     def vincular_Animal_Habitat(self):
         st.divider()

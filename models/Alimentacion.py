@@ -6,16 +6,6 @@ class Alimentacion:
         self.alimentosDisponibles = alimentosDisponibles
         self.alimentosAnimal = alimentosAnimal
 
-
-    def agregarAlimentoDisponible(self, alimentoNuevo):
-        self.alimentosDisponibles.append(alimentoNuevo)
-
-    def agregarAlimentoAnimal(self, alimentoNuevo):
-        self.alimentosAnimal.append(alimentoNuevo)
-
-    def eliminarAlimentoDisponible(self, alimentoEliminar):
-        self.alimentosDisponibles.remove(alimentoEliminar)
-
     def eliminarAlimentoAnimal(self, alimentoEliminar):
         self.alimentosAnimal.pop(alimentoEliminar)
 
@@ -66,8 +56,9 @@ class Alimentacion:
         else:
             return None
 
-    def eliminar_alimentos_disponibles(self):
-        for clave in self.alimentosAnimal:
-            if clave in self.alimentosDisponibles:
-                self.alimentosDisponibles.remove(clave)
-        print(self.alimentosDisponibles)
+    def imprimirListaAlimentosAnimal(self):
+        for alimento, cantidad in self.alimentosAnimal.items():
+            st.write("")
+            st.write("    -- Alimento: ", alimento)
+            st.write("    -- Cantidad en kg: ", cantidad)
+            st.write("")

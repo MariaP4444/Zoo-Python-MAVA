@@ -29,22 +29,6 @@ class Zoo:
     def eliminarAnimalRegistro(self, id):
         self.registroAn.pop(id)
 
-    def existeHabitatTemp(self, temMax, temMin):
-        for habitat in self.habitats:
-            if habitat.getTempMax() <= temMax and habitat.getTempMin() >= temMin:
-                return True
-        return False
-
-    def buscar_animal_id(self, id_animal, id_habitat):
-
-        for clave, animal in self.registroAn.items():
-            if clave == id:
-                return animal
-
-        for clave, animal in self.habitats[id_habitat].animales.items():
-            if clave == id_animal:
-                return animal
-        return None
 
     def agregarAnimalRegistro(self, animalNuevo):
         self.registroAn[animalNuevo.id] = animalNuevo
@@ -133,3 +117,56 @@ class Zoo:
 
         else:
             return None
+
+    def listarInfoCompletaZoo(self):
+        st.divider()
+
+        if len(self.registroAn) == 0 and len(self.habitats) == 0:
+            st.subheader("No hay nada de informacion en el Zoo")
+        else:
+            with st.expander("Registro:"):
+                if (len(self.registroAn) == 0):
+                    st.subheader("No hay hay animales en el registro")
+                else:
+                    for id in self.registroAn:
+                        st.subheader(":blue[Animales]")
+                        st.subheader(self.registroAn[id].nombre)
+                        st.write(" - ID: ", id)
+                        st.write(" - Especie: ", self.registroAn[id].especie)
+                        st.write(" - Edad: ", self.registroAn[id].edad)
+                        st.write(" - Estado de salud: ", self.registroAn[id].estadoDeSalud)
+                        st.write(" - Temperatura maxima:", self.registroAn[id].tempMaxA)
+                        st.write(" - Temperatura minima:", self.registroAn[id].tempMinA)
+                        st.write(" - Cantidad de horas dormidas:", self.registroAn[id].cantHorasDormidas)
+                        st.write(" - Alimentacion: ", self.registroAn[id].alimentacion.tipoDieta)
+                        self.registroAn[id].alimentacion.imprimirListaAlimentosAnimal()
+                        st.write(" - Juguetes: ")
+                        self.registroAn[id].imprimirJuguetes()
+                        st.divider()
+
+            for habitat in self.habitats:
+                with st.expander(habitat.nombre):
+                    st.subheader(":blue[Informacion habitat]")
+                    st.write(" - Tipo de habitat: ", habitat.nombre)
+                    st.write(" - Temperatura maxima:", habitat.tempMax)
+                    st.write(" - Temperatura minima:", habitat.tempMin)
+                    st.write(" - Cantidad Maxima Animales: ", habitat.cantMaxAnimales)
+                    st.write(" - Dieta: ", habitat.dieta)
+                    if (len(habitat.animales) == 0):
+                        st.subheader("- No hay hay animales en el habitat -")
+                    else:
+                        for ID, animal in habitat.animales.items():
+                            st.subheader(":blue[Animales]")
+                            st.subheader(self.registroAn[id].nombre)
+                            st.write(" - ID: ", ID)
+                            st.write(" - Especie: ", animal.especie)
+                            st.write(" - Edad: ", animal.edad)
+                            st.write(" - Estado de salud: ", animal.estadoDeSalud)
+                            st.write(" - Temperatura maxima:", animal.tempMaxA)
+                            st.write(" - Temperatura minima:", animal.tempMinA)
+                            st.write(" - Cantidad de horas dormidas:", animal.cantHorasDormidas)
+                            st.write(" - Alimentacion: ", animal.alimentacion.tipoDieta)
+                            animal.alimentacion.imprimirListaAlimentosAnimal()
+                            st.write(" - Juguetes: ")
+                            animal.imprimirJuguetes()
+                            st.divider()

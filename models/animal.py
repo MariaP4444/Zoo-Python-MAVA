@@ -1,6 +1,6 @@
 
 from typing import List, Dict
-
+import streamlit as st
 class Animal:
     def _init_(self, nombre="", especie="", estadoDeSalud="", id=0, tempMaxA=0, tempMinA=0, cantMaxDormir=0, edad=0,
                juguetes=[],
@@ -20,4 +20,7 @@ class Animal:
         self.jugar = jugar
         self.comer = comer
 
+    def imprimirJuguetes(self):
+        for juguete in self.juguetes:
+            st.write("     -- Nombre: ", juguete)
 

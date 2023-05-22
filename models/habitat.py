@@ -20,27 +20,8 @@ class Habitat:
             texto = "++ Id:" + str(ID) + " ++ " + "Nombre: " + self.animales[ID].nombre +" ++ " + "dieta: " + self.animales[ID].alimentacion.tipoDieta
             animalesH.append(texto)
 
-        st.write("AQUIIIII p",animalesH)
         if animalesH:
             return animalesH
-
-    def infoCompletaAn(self):
-        for animal in self.animales.values():
-            print(f"Nombre: {animal.getNombre()}")
-            print(f"Especie: {animal.getEspecie()}")
-            print(f"Estado de salud: {animal.getEstadoDeSalud()}")
-            print(f"Alimentación: {animal.getAliemtacion()}")
-            print(f"ID: {animal.id}")
-            print(f"Edad: {animal.getEdad()}")
-            print(f"Temperatura máxima aceptable: {animal.getTempMaxA()}")
-            print(f"Temperatura mínima aceptable: {animal.getTempMinA()}")
-            print(f"Cantidad de horas dormidas: {animal.getCantHorasDormidas()}")
-            print(f"Cantidad máxima de horas que puede dormir: {animal.getCantMaxDormir()}")
-            print(f"Puede jugar: {animal.getJugar()}")
-            print(f"Puede comer: {animal.getComer()}")
-            print(f"Juguetes: {animal.juguetes}")
-            print(f"Alimentos: {animal.alimentos}")
-            print("\n")
 
     def agregarAnimal(self, animalNuevo):
         self.animales[animalNuevo.id] = animalNuevo

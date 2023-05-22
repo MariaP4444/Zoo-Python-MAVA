@@ -39,7 +39,6 @@ class zooView:
         if "opcion" in st.session_state:
             self.controlador.menu_principalV2(st.session_state["opcion"])
 
-
     def seleccionar_Habitat(self):
         opcion = st.radio(
             "Escoge el tipo de habitat que vas a crear:",
@@ -57,9 +56,6 @@ class zooView:
 
         return opcion
 
-    def preguntar_id(self):
-        id = st.number_input("Ingrese el id del animal: ", min_value=0)
-        return id
 
     def escoger_actividad(self):
 
@@ -132,7 +128,6 @@ class zooView:
 
         return options
 
-
     def obtener_Dato_String(self, mensaje):
         return st.text_input(mensaje)
 
@@ -154,9 +149,6 @@ class zooView:
 
         return option
 
-    def pedir_salud(self):
-        salud = input("Ingrese el estado actual de salud del animal: ")
-        return salud
 
     def mostrar_mensaje_exitoso(self, mensaje):
         st.success(mensaje)
@@ -184,23 +176,6 @@ class zooView:
                 columns=["Cantidad de kg", "Nombre"]
             )
             st.table(datos)
-
-    def agregar_alimentos(self, animal, lista_alimentos, num):
-
-        kgs = []
-        col1, col2 = st.columns([3, 1])
-        i = 0
-        while i < len(lista_alimentos):
-            with st.container():
-                kg = st.slider(f"Kilogramos de {lista_alimentos[i]}:", 0, 50, 25, key=i+num)
-                print(i)
-                kgs.append(kg)
-            i += 1
-
-        for clave in range(len(lista_alimentos)):
-            animal.alimentacion.alimentosAnimal[lista_alimentos[clave]] = kgs[clave]
-
-
 
     def agregar_juguetes(self, animal, cantJuguetes, num):
 
