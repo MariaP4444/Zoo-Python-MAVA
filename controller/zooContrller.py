@@ -28,7 +28,7 @@ class zooController:
                 st.balloons()
 
         if opcion == 4:
-            self.buscar_id(4)
+            self.editarAniml()
 
         if opcion == 5:
             self.buscar_id(5)
@@ -51,11 +51,11 @@ class zooController:
                     self.view.mostrar_mensaje_error("No existe ID del habitat")
                 else:
                     if id_animal not in self.models.registroAn:
-                        id_habitat = self.view.obtener_Dato_Int_Rango("ID del habitat del animal:", 0)
+                        id_habitat = self.view.obtener_Dato_Int_Rango("ID del habitat del animal:", 0, len(self.models.habitats))
 
                         if id_habitat:
 
-                            if id_habitat not in self.models.habitats:
+                            if id_habitat+1 > len(self.models.habitats):
                                 self.view.mostrar_mensaje_error("No existe ID del habitat")
                             else:
                                 animal = self.models.habitats[id_habitat].animales[id_animal]
@@ -74,6 +74,86 @@ class zooController:
                         elif opc == 5:
                             self.view.escoger_actividad(animal)
                             return 1
+
+    def editarAniml(self):
+        info_correcta = True
+        animalModificar = self.models.listarAnimalesEnHabitat()
+
+        options = self.view.menu_info_animal(animalModificar)
+
+        if options:
+
+            if "Nombre" in options:
+                animalModificar.nombre = self.view.obtener_Dato_String("Nombre:")
+
+            if "Edad" in options:
+                animalModificar.edad = self.view.obtener_Dato_Int_Rango("Edad:", animalModificar.edad, 100)
+
+            if "Estado de salud" in options:
+                animalModificar.estadoDeSalud = self.view.obtener_Dato_String("Salud:")
+
+            if "Horas de sueño" in options:
+                animalModificar.cantMaxDormir = self.view.obtener_Dato_Int_Rango("Horas de sueño:", 1, 24)
+
+            if "Cantidad de kg en dieta" in options:
+                self.view.listar_alimentos_animal(animalModificar)
+                i = 0
+                for clave in animalModificar.alimentacion.alimentosAnimal.keys():
+                    animalModificar.alimentacion.alimentosAnimal[clave] = st.slider(f"Kilogramos de {clave}:", 0, 50, 25,
+                                                                           key=i + 195)
+                    i += 1
+
+            if "Agregar juguetes" in options:
+                num_juguetes = self.view.obtener_Dato_Int_Rango("Numero de juguetes a agregar", 1, 15)
+                if num_juguetes:
+                    self.view.agregar_juguetes(animalModificar, num_juguetes, 268)
+
+            if "Eliminar juguetes" in options:
+
+                if len(animalModificar.juguetes) == 1:
+                    self.view.mostrar_mensaje_error(f"No puedes eliminar el único juguete de {animalModificar.nombre}")
+                    info_correcta = False
+                else:
+                    juguetes_eliminar = st.multiselect(
+                        'Juguetes del animal',
+                        animalModificar.juguetes)
+
+                    if len(juguetes_eliminar) == len(animalModificar.juguetes):
+                        info_correcta = False
+                        self.view.mostrar_mensaje_error("No puedes eliminar todos los juguetes")
+                    else:
+                        for i in range(len(juguetes_eliminar)):
+                            animalModificar.juguetes.remove(juguetes_eliminar[i])
+
+            if "Agregar alimento a dieta actual" in options:
+                if len(animalModificar.alimentacion.alimentosDisponibles) == 0:
+                    self.view.mostrar_mensaje_error(f"No hay más alimentos disponibles dentro de la dieta de {animalModificar.nombre}")
+
+                else:
+                    alimentoNuevo = animalModificar.alimentacion.listaAlimentosDisponibles()
+                    cantKG = st.slider("Ingrese los kilogramos de" + alimentoNuevo, 0, 100)
+                    animalModificar.alimentacion.alimentosAnimal[alimentoNuevo] = cantKG
+
+            if "Eliminar alimento en dieta actual" in options:
+                if len(animalModificar.alimentacion.alimentosAnimal) == 1:
+                    self.view.mostrar_mensaje_error(f"Solo hay un alimento en la dieta de {animalModificar.nombre}")
+                    info_correcta = False
+                else:
+                    alimentoEliminar = animalModificar.alimentacion.listarAlimentosAnimal("Eliga el alimento que desea eliminar de la dieta del animal")
+                    if alimentoEliminar != None:
+                        animalModificar.alimentacion.eliminarAlimentoAnimal(alimentoEliminar)
+
+            if "Agregar alimento a dieta disponible" in options:
+                animalModificar.alimentacion.alimentosDisponibles.append(self.view.obtener_Dato_String("Ingrese el nombre del alimento"))
+
+            if info_correcta:
+                boton_accion = st.button("Actualizar información")
+                if boton_accion:
+                    self.models.buscarAnimalIdYAgregar(animalModificar.id, animalModificar)
+                    st.success("El producto fue actualizado correctamente")
+
+
+
 
 
     def vincular_Animal_Habitat(self):
@@ -139,8 +219,6 @@ class zooController:
                     return nuevoHabitat
             else:
                 st.error("Faltan datos")
-
-
 
     def crear_animal(self, id):
         st.divider()
@@ -219,7 +297,6 @@ class zooController:
                     return nuevoAnimal
             else:
                 st.error("Faltan datos")
-
 
     def aplicar_formato_tabla(self, animal):
         datos = []

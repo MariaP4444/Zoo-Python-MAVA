@@ -1,6 +1,8 @@
+import streamlit as st
+
 
 class Habitat:
-    def __init__(self, nombre, tempMax, tempMin , dieta, cantMaxAnimales):
+    def __init__(self, nombre = "", tempMax = 0, tempMin = 0 , dieta = None, cantMaxAnimales = 0):
         self.nombre = nombre
         self.tempMax = tempMax
         self.tempMin = tempMin
@@ -13,12 +15,14 @@ class Habitat:
         return self.animales[id]
 
     def listarAnimales(self):
-        print("Los animales de este hábitat son:")
+        animalesH = []
         for ID, animal in self.animales.items():
-            print("- Nombre:", animal.getNombre())
-            print("- Especie:", animal.getEspecie())
-            print("- ID:", ID)
-            print("---------------------------------")
+            texto = "++ Id:" + str(ID) + " ++ " + "Nombre: " + self.animales[ID].nombre +" ++ " + "dieta: " + self.animales[ID].alimentacion.tipoDieta
+            animalesH.append(texto)
+
+        st.write("AQUIIIII p",animalesH)
+        if animalesH:
+            return animalesH
 
     def infoCompletaAn(self):
         for animal in self.animales.values():
@@ -48,6 +52,9 @@ class HabitatAcuatico(Habitat):
         self.salinidad = salinidad
         self.profundidad = profundidad
 
+    def listarAnimales(self):
+        super().listarAnimales()
+
 
 class HabitatPolar(Habitat):
     def __init__(self, nombre, tempMax, tempMin,dieta, cantMaxAnimales, cantidadHielo, tamanioCueva):
@@ -55,12 +62,18 @@ class HabitatPolar(Habitat):
         self.cantidadHielo = cantidadHielo
         self.tamanioCueva = tamanioCueva
 
+    def listarAnimales(self):
+        super().listarAnimales()
+
 
 class HabitatDesertico(Habitat):
     def __init__(self,  nombre, tempMax, tempMin,dieta, cantMaxAnimales, humedad, cantidadOasis):
         super().__init__( nombre, tempMax, tempMin,dieta, cantMaxAnimales)
         self.humedad = humedad
         self.cantidadOasis = cantidadOasis
+    
+    def listarAnimales(self):
+        super().listarAnimales()
 
 
 class HabitatSelvatico(Habitat):
@@ -68,3 +81,6 @@ class HabitatSelvatico(Habitat):
         super().__init__( nombre, tempMax, tempMin,dieta, cantMaxAnimales)
         self.cantidadArboles = cantidadArboles
         self.cantidadRios = cantidadRios
+
+    def listarAnimales(self):
+        super().listarAnimales()

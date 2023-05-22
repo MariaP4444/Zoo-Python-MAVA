@@ -5,6 +5,7 @@ class Animal:
     def _init_(self, nombre="", especie="", estadoDeSalud="", id=0, tempMaxA=0, tempMinA=0, cantMaxDormir=0, edad=0,
                juguetes=[],
                alimentacion=None, jugar=False, comer=False, cantHorasDormidas=0):
+
         self.nombre = nombre
         self.especie = especie
         self.estadoDeSalud = estadoDeSalud
