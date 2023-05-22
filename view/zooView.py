@@ -61,7 +61,9 @@ class zooView:
         id = st.number_input("Ingrese el id del animal: ", min_value=0)
         return id
 
-    def escoger_actividad(self, animal):
+    def escoger_actividad(self):
+
+        animal = self.zoo.listarAnimalesEnHabitat()
 
         actividades = ['comer', 'dormir', 'jugar']
 
@@ -207,6 +209,8 @@ class zooView:
             while i <= cantJuguetes:
                 with st.container():
                     nombre = col1.text_input(f"Nombre juguete {i}:", key=num+i)
-                    animal.juguetes.append(nombre)
+                    if nombre:
+                        if nombre not in animal.juguetes:
+                            animal.juguetes.append(nombre)
                     print(f"key:{i}")
                 i += 1

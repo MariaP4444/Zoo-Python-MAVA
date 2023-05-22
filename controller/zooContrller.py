@@ -31,49 +31,12 @@ class zooController:
             self.editarAniml()
 
         if opcion == 5:
-            self.buscar_id(5)
+            self.view.escoger_actividad()
 
         if opcion == 6:
 
             self.vincular_Animal_Habitat()
 
-    def buscar_id(self, opc):
-
-        if self.models.cantAnimales == 0:
-            self.view.mostrar_mensaje_error("No hay animales")
-
-        else:
-            id_animal = self.view.preguntar_id()
-
-            if id_animal:
-
-                if id_animal > self.models.cantAnimales:
-                    self.view.mostrar_mensaje_error("No existe ID del habitat")
-                else:
-                    if id_animal not in self.models.registroAn:
-                        id_habitat = self.view.obtener_Dato_Int_Rango("ID del habitat del animal:", 0, len(self.models.habitats))
-
-                        if id_habitat:
-
-                            if id_habitat+1 > len(self.models.habitats):
-                                self.view.mostrar_mensaje_error("No existe ID del habitat")
-                            else:
-                                animal = self.models.habitats[id_habitat].animales[id_animal]
-                                if opc == 4:
-                                    self.view.menu_info_animal_prueba(animal)
-                                    #Retorna 1 porque las opciones 4 y 5 usan esta función
-                                    return 1
-                                elif opc == 5:
-                                    self.view.escoger_actividad(animal)
-                                    return 1
-                    else:
-                        animal = self.models.registroAn[id_animal]
-                        if opc == 4:
-                            self.view.menu_info_animal_prueba(animal)
-                            return 1
-                        elif opc == 5:
-                            self.view.escoger_actividad(animal)
-                            return 1
 
     def editarAniml(self):
         info_correcta = True
@@ -103,10 +66,12 @@ class zooController:
                                                                            key=i + 195)
                     i += 1
 
+            numero = [0]
             if "Agregar juguetes" in options:
                 num_juguetes = self.view.obtener_Dato_Int_Rango("Numero de juguetes a agregar", 1, 15)
                 if num_juguetes:
                     self.view.agregar_juguetes(animalModificar, num_juguetes, 268)
+                    print(f"numero:{numero[0]}")
 
             if "Eliminar juguetes" in options:
 
@@ -131,8 +96,10 @@ class zooController:
 
                 else:
                     alimentoNuevo = animalModificar.alimentacion.listaAlimentosDisponibles()
-                    cantKG = st.slider("Ingrese los kilogramos de" + alimentoNuevo, 0, 100)
-                    animalModificar.alimentacion.alimentosAnimal[alimentoNuevo] = cantKG
+                    if alimentoNuevo:
+                        cantKG = st.slider("Ingrese los kilogramos de" + alimentoNuevo, 0, 100)
+                        if cantKG:
+                            animalModificar.alimentacion.alimentosAnimal[alimentoNuevo] = cantKG
 
             if "Eliminar alimento en dieta actual" in options:
                 if len(animalModificar.alimentacion.alimentosAnimal) == 1:
@@ -150,7 +117,7 @@ class zooController:
                 boton_accion = st.button("Actualizar información")
                 if boton_accion:
                     self.models.buscarAnimalIdYAgregar(animalModificar.id, animalModificar)
-                    st.success("El producto fue actualizado correctamente")
+                    st.success("La información fue actualizada correctamente")
 
 
 
