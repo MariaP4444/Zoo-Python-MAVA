@@ -2,7 +2,7 @@ import models.Zoo as zooModel
 import streamlit as st
 import controller.zooContrller as zooController
 import pandas as pd
-
+import requests as rq
 
 class zooView:
     def __init__(self):
@@ -26,13 +26,15 @@ class zooView:
         st.title("Bienvenido el zoologico MAVA")
 
         with st.container():
-            col1, col2, col3, col4, col5, col6 = st.columns(6)
+            col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
             boton_agregar_habitat = col1.button("Agregar habitat", 1)
             boton_agregar_animal = col2.button("Agregar animal", 2)
             boton_listar_habitats = col3.button("Listar animales", 3)
             boton_modificar_infoAn = col4.button("Editar animal", 4)
             boton_visitar_habitat = col5.button("Interactuar con animal", 5)
             boton_vincular_Animal_Habitat = col6.button("Vincular animal con un habitat",6)
+            boton_perritos_API = col7.button("Imagenes de perrito",7)
+
 
         if boton_agregar_habitat:
             st.session_state["opcion"] = 1
@@ -46,6 +48,9 @@ class zooView:
             st.session_state["opcion"] = 5
         elif boton_vincular_Animal_Habitat:
             st.session_state["opcion"] = 6
+        elif boton_perritos_API:
+            st.session_state["opcion"] = 7
+
 
         #st.write(self.zoo.habitats[0].animales[2].nombre)
         if "opcion" in st.session_state:
@@ -275,3 +280,25 @@ class zooView:
                             animal.juguetes.append(nombre)
                     print(f"key:{i}")
                 i += 1
+
+
+    def informacionAPI(self):
+
+
+        url = rq.get("https://dog.ceo/api/breeds/list/all")
+        datos = url.json()
+        razas = ['']
+        url_consulta_p1 = "https://dog.ceo/api/breed/"
+        url_consulta_p2 = "/images/random"
+
+        for llave2,valor2 in datos['message'].items():
+            razas.append(llave2)
+
+        raza = st.selectbox(
+            'Escoge una raza',
+            razas)
+        if raza != '':
+            busqueda = rq.get(url_consulta_p1 + raza + url_consulta_p2)
+            datos2 = busqueda.json()
+
+            st.image(datos2['message'])

@@ -42,9 +42,10 @@ class zooController:
             self.view.interactuar_animal()
 
         if opcion == 6:
-
             self.vincular_Animal_Habitat()
 
+        if opcion == 7:
+            self.view.informacionAPI()
 
     """ EDITAR ANIMAL
      Opcion: Editar animal
