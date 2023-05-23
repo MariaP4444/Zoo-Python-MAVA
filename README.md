@@ -29,6 +29,9 @@ Esta estructura de directorios permite una organización clara y modular del pro
 ***Informe de autoevaluacion - Maria Paula Castillo Erazo***
 >[Informe de autoevaluacion](https://docs.google.com/document/d/1-9KDn4kOjMJntsmQ_INNvbP1aY5lAVOe5y_8ggyraiE/edit?usp=sharing)
 
+***Informe de autoevaluacion - Maria Paula Castillo Erazo***
+>[Informe de autoevaluacion](https://docs.google.com/document/d/1FJ8sV5x6Aa_KVZXBgxTE25b18naBJFcWhNuO-0G1TPE/edit?usp=sharing)
+
 ## Models
 En este directorio se encuentran nuestras 4 principales clases:
 1. ### Alimentacion
