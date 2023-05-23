@@ -26,6 +26,9 @@ Esta estructura de directorios permite una organización clara y modular del pro
 ***Pruebas fotogradicas del funcionamiento del programa***
 >[Fotos](https://docs.google.com/document/d/1as9BL2eZd2aE90gHLmLe5TFWuYKQQODsJ4FaMV3jbNA/edit?usp=sharing)
 
+***Informe de autoevaluacion - Maria Paula Castillo Erazo***
+>[Informe de autoevaluacion](https://docs.google.com/document/d/1-9KDn4kOjMJntsmQ_INNvbP1aY5lAVOe5y_8ggyraiE/edit?usp=sharing)
+
 ## Models
 En este directorio se encuentran nuestras 4 principales clases:
 1. ### Alimentacion
